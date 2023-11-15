@@ -1,62 +1,98 @@
 <script>
 
+import { ref } from 'vue';
+import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputnumber';
+import RadioButton from 'primevue/radiobutton';
+import Dropdown from 'primevue/dropdown';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+
 export default {
-  data() {
-    return {
-      persons: [],
-      newPerson: {
-        firstName: '',
-        lastName: '',
-        country: '',
-        age: null,
-        gender: 'Masculino',
-        active: false,
-      },
-      showModal: false,
-    };
+  components: {
+    InputText,
+    InputNumber,
+    RadioButton,
+    Dropdown,
+    DataTable,
+    Column,
   },
-  methods: {
 
-    toggleModal() {
-      this.showModal = !this.showModal;
-    },
+  setup() {
+  const persons = ref([]);
+  const newPerson = ref({
+    firstName: '',
+    lastName: '',
+    country: '',
+    age: null,
+    gender: 'Masculino',
+    active: false,
+  });
 
-    closeModal() {
-      this.showModal = false;
-    },
+ 
 
-    addPerson() {
-      if (this.isPersonValid()) {
-        this.persons.push({ ...this.newPerson });
-        this.resetForm();
-        this.closeModal();
-      }
-    },
+  const showModal = ref(false);
+  const countries = ['Colombia', 'Brasil', 'Chile', 'Argentina'];
 
-    removePerson(index) {
-      this.persons.splice(index, 1);
-    },
+  const activeOptions = ref([
+    { label: 'Activo', value: true },
+    { label: 'Inactivo', value: false },
+  ]);
 
-    isPersonValid() {
-      return (
-        this.newPerson.firstName.trim() !== '' &&
-        this.newPerson.lastName.trim() !== '' &&
-        this.newPerson.country.trim() !== '' &&
-        this.newPerson.age !== null
-      );
-    },
+  const toggleModal = () => {
+    showModal.value = !showModal.value;
+  };
 
-    resetForm() {
-      this.newPerson = {
-        firstName: '',
-        lastName: '',
-        country: '',
-        age: null,
-        gender: 'Masculino',
-        active: false,
-      };
-    },
-  },
+  const closeModal = () => {
+    showModal.value = false;
+  };
+
+  const addPerson = () => {
+    if (isPersonValid()) {
+      persons.value.push({ ...newPerson.value });
+      resetForm();
+      closeModal();
+    }
+  };
+
+  const removePerson = (index) => {
+    persons.value.splice(index, 1);
+  };
+
+  const isPersonValid = () => {
+    return (
+      newPerson.value.firstName.trim() !== '' &&
+      newPerson.value.lastName.trim() !== '' &&
+      newPerson.value.country.trim() !== '' &&
+      newPerson.value.age !== null
+    );
+  };
+
+  const resetForm = () => {
+  newPerson.value = {
+    firstName: '',
+    lastName: '',
+    country: '',
+    age: null,
+    gender: 'Masculino',
+    active: false,
+  };
 };
 
+  return {
+    persons,
+    newPerson,
+    showModal,
+    countries,
+    toggleModal,
+    closeModal,
+    activeOptions,
+    addPerson,
+    removePerson,
+    isPersonValid,
+    resetForm,
+
+    };
+  },
+}
 </script>
