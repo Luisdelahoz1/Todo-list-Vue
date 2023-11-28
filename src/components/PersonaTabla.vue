@@ -1,7 +1,7 @@
 <script>
 import { ref, computed } from "vue";
 import { useToast } from "primevue/usetoast";
-import { useConfirm } from "primevue/useconfirm";
+import { useConfirm as useConfirmService } from "primevue/useconfirm";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import RadioButton from "primevue/radiobutton";
@@ -28,7 +28,6 @@ export default {
     const displayConfirmation = ref(false);
     const showModal = ref(false);
 
-    const { confirm } = useConfirm();
     const persons = ref([]);
 
     const newPerson = ref({
@@ -46,14 +45,7 @@ export default {
       { label: "Inactivo", value: false },
     ];
 
-    const onConfirmationAccept = () => {
-      removePersonById();
-      displayConfirmation.value = false;
-    };
-
-    const onConfirmationReject = () => {
-      displayConfirmation.value = false;
-    };
+    const confirmService = useConfirmService();
 
     const isFormValid = computed(() => {
       return isPersonValid();
@@ -90,15 +82,12 @@ export default {
     };
 
     const showConfirmationDialog = (person) => {
-      confirm({
+      confirmService({
         message: "¿Estás seguro de que quieres eliminar este usuario?",
         accept: () => {
-          console.log("Confirmation accepted");
           removePerson(person);
         },
-        reject: () => {
-          console.log("Confirmation rejected");
-        },
+        reject: () => {},
       });
     };
 
@@ -109,11 +98,16 @@ export default {
     const removePerson = (person) => {
       console.log("Removing person:", person);
       if (persons.value && persons.value.length > 0) {
-        const index = persons.value.findIndex((p) => p.id === person.id);
-        if (index !== -1) {
-          persons.value.splice(index, 1);
-          console.log("Person removed successfully");
-          showToast("success", "Éxito", "Persona eliminada correctamente");
+        try {
+          const index = persons.value.findIndex((p) => p.id === person.id);
+          if (index !== -1) {
+            persons.value.splice(index, 1);
+            console.log("Person removed successfully");
+            showToast("success", "Éxito", "Persona eliminada correctamente");
+          }
+        } catch (error) {
+          console.error("Error removing person:", error);
+          showToast("error", "Error", "Error al eliminar la persona");
         }
       }
 
@@ -154,8 +148,6 @@ export default {
       countries,
       activeOptions,
       displayConfirmation,
-      onConfirmationAccept,
-      onConfirmationReject,
       addPerson,
       closeModal,
     };

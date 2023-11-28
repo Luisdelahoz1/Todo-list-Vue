@@ -35,8 +35,6 @@
       icon="pi pi-exclamation-triangle"
       accept-label="Sí"
       reject-label="No"
-      @accept="onConfirmationAccept"
-      @reject="onConfirmationReject"
     >
       ¿Estás seguro de que quieres eliminar este usuario?
     </ConfirmDialog>
