@@ -82,7 +82,7 @@ export default {
     };
 
     const showConfirmationDialog = (person) => {
-      confirmService({
+      confirm({
         message: "¿Estás seguro de que quieres eliminar este usuario?",
         accept: () => {
           removePerson(person);
@@ -98,19 +98,14 @@ export default {
     const removePerson = (person) => {
       console.log("Removing person:", person);
       if (persons.value && persons.value.length > 0) {
-        try {
-          const index = persons.value.findIndex((p) => p.id === person.id);
-          if (index !== -1) {
-            persons.value.splice(index, 1);
-            console.log("Person removed successfully");
-            showToast("success", "Éxito", "Persona eliminada correctamente");
-          }
-        } catch (error) {
-          console.error("Error removing person:", error);
-          showToast("error", "Error", "Error al eliminar la persona");
+        const index = persons.value.findIndex((p) => p.id === person.id);
+        if (index !== -1) {
+          persons.value.splice(index, 1);
+          console.log("Person removed successfully");
+          showToast("success", "Éxito", "Persona eliminada correctamente");
         }
       }
-
+      persons.value = [...persons.value];
       resetForm();
     };
 
