@@ -14,6 +14,7 @@ import Column from 'primevue/column';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -35,5 +36,6 @@ app.component('InputNumber', InputNumber);
 app.component('RadioButton', RadioButton);
 app.component('Dropdown', Dropdown);
 app.component('Dialog', Dialog);
+app.component('ConfirmDialog', ConfirmDialog)
 
 app.mount('#app');

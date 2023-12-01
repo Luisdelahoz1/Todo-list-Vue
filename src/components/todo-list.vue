@@ -24,20 +24,11 @@
       </Column>
       <Column header="Acciones">
         <template #body="slotProps">
-          <button @click="confirmDelete(slotProps.rowData)">Eliminar</button>
+          <ConfirmDialog></ConfirmDialog>
+          <button @click="confirmDelete(slotProps.rowIndex)">Eliminar</button>
         </template>
       </Column>
     </DataTable>
-
-    <ConfirmDialog
-      v-model="displayConfirmation"
-      header="Confirmación"
-      icon="pi pi-exclamation-triangle"
-      accept-label="Sí"
-      reject-label="No"
-    >
-      ¿Estás seguro de que quieres eliminar este usuario?
-    </ConfirmDialog>
 
     <Dialog :visible="showModal" header="Añadir Persona" :onHide="closeModal">
       <form @submit.prevent="addPerson">
@@ -184,8 +175,8 @@ th {
 }
 
 button {
-  background-color: rgb(91, 53, 229);
-  color: #fff;
+  background: #2838c6;
+  color: #ffffff;
   border: none;
   padding: 10px;
   cursor: pointer;

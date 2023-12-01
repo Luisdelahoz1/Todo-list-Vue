@@ -1,7 +1,7 @@
 <script>
 import { ref, computed } from "vue";
 import { useToast } from "primevue/usetoast";
-import { useConfirm as useConfirmService } from "primevue/useconfirm";
+import { useConfirm } from "primevue/useconfirm";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import RadioButton from "primevue/radiobutton";
@@ -25,8 +25,10 @@ export default {
 
   setup() {
     const toast = useToast();
+    const confirm = useConfirm();
     const displayConfirmation = ref(false);
     const showModal = ref(false);
+    const personToDelete = ref(null);
 
     const persons = ref([]);
 
@@ -44,8 +46,6 @@ export default {
       { label: "Activo", value: true },
       { label: "Inactivo", value: false },
     ];
-
-    const confirmService = useConfirmService();
 
     const isFormValid = computed(() => {
       return isPersonValid();
@@ -77,36 +77,39 @@ export default {
       }
     };
 
-    const confirmDelete = (person) => {
-      showConfirmationDialog(person);
+    const confirmDelete = (index) => {
+      personToDelete.value = persons.value[index];
+      confirm.require({
+        message: "¿Estás seguro de que quieres eliminar este usuario?",
+        header: "Confirmación",
+        icon: "pi pi-info-circle",
+        rejectClass: "p-button-text p-button-text",
+        acceptClass: "p-button-danger p-button-text",
+        accept: () => {
+          deletePerson(index);
+        },
+        reject: () => {
+          personToDelete.value = null;
+          toast.add({
+            severity: "warn",
+            summary: "Cancelado",
+            detail: "Eliminación cancelada",
+            life: 1500,
+          });
+        },
+      });
     };
 
-    const showConfirmationDialog = (person) => {
-      confirm({
-        message: "¿Estás seguro de que quieres eliminar este usuario?",
-        accept: () => {
-          removePerson(person);
-        },
-        reject: () => {},
-      });
+    const deletePerson = (index) => {
+      if (index !== 1) {
+        persons.value.splice(index, 1);
+        showToast("success", "Éxito", "Persona eliminada correctamente");
+        personToDelete.value = null;
+      }
     };
 
     const toggleModal = () => {
       showModal.value = !showModal.value;
-    };
-
-    const removePerson = (person) => {
-      console.log("Removing person:", person);
-      if (persons.value && persons.value.length > 0) {
-        const index = persons.value.findIndex((p) => p.id === person.id);
-        if (index !== -1) {
-          persons.value.splice(index, 1);
-          console.log("Person removed successfully");
-          showToast("success", "Éxito", "Persona eliminada correctamente");
-        }
-      }
-      persons.value = [...persons.value];
-      resetForm();
     };
 
     const isPersonValid = () => {
@@ -132,9 +135,7 @@ export default {
     };
 
     return {
-      persons,
       newPerson,
-      confirmDelete,
       isFormValid,
       resetForm,
       showToast,
@@ -145,6 +146,10 @@ export default {
       displayConfirmation,
       addPerson,
       closeModal,
+      deletePerson,
+      persons,
+      personToDelete,
+      confirmDelete,
     };
   },
 };
