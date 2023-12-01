@@ -2,10 +2,6 @@
 import { ref, computed } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
-import InputText from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
-import RadioButton from "primevue/radiobutton";
-import Dropdown from "primevue/dropdown";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ConfirmDialog from "primevue/confirmdialog";
@@ -13,10 +9,6 @@ import Dialog from "primevue/dialog";
 
 export default {
   components: {
-    InputText,
-    InputNumber,
-    RadioButton,
-    Dropdown,
     DataTable,
     Column,
     ConfirmDialog,
@@ -50,8 +42,12 @@ export default {
     const isFormValid = computed(() => {
       return isPersonValid();
     });
+    const openModal = () => {
+      showModal.value = true;
+    };
 
     const closeModal = () => {
+      console.log("Cerrando modal");
       showModal.value = false;
     };
 
@@ -77,34 +73,47 @@ export default {
       }
     };
 
-    const confirmDelete = (index) => {
-      personToDelete.value = persons.value[index];
-      confirm.require({
-        message: "¿Estás seguro de que quieres eliminar este usuario?",
-        header: "Confirmación",
-        icon: "pi pi-info-circle",
-        rejectClass: "p-button-text p-button-text",
-        acceptClass: "p-button-danger p-button-text",
-        accept: () => {
-          deletePerson(index);
-        },
-        reject: () => {
-          personToDelete.value = null;
-          toast.add({
-            severity: "warn",
-            summary: "Cancelado",
-            detail: "Eliminación cancelada",
-            life: 1500,
-          });
-        },
-      });
+    const confirmDelete = (person) => {
+      showConfirmDialog(person);
     };
 
-    const deletePerson = (index) => {
-      if (index !== 1) {
-        persons.value.splice(index, 1);
-        showToast("success", "Éxito", "Persona eliminada correctamente");
+    const showConfirmDialog = (person) => {
+      if (
+        confirm.require({
+          message: `¿Seguro desea eliminar a  ${person.firstName} ? `,
+          header: "Confirmación",
+          icon: "pi pi-info-circle",
+          rejectClass: "p-button-text p-button-text",
+          acceptClass: "p-button-danger p-button-text",
+          accept: () => {
+            toast.add({
+              severity: "info",
+              summary: "Confirmacion",
+              detail: " Eliminacion correcta",
+              life: 1500,
+            });
+
+            removePerson(person);
+          },
+
+          reject: () => {
+            toast.add({
+              severity: "error",
+              summary: "Error",
+              detail: "Usuaro no eliminado",
+              life: 3000,
+            });
+          },
+        })
+      ) {
+      }
+    };
+
+    const removePerson = (person) => {
+      if (person !== -1) {
+        persons.value.splice(person, 1);
         personToDelete.value = null;
+        showModal.value = false;
       }
     };
 
@@ -146,10 +155,12 @@ export default {
       displayConfirmation,
       addPerson,
       closeModal,
-      deletePerson,
+      openModal,
       persons,
       personToDelete,
       confirmDelete,
+      showConfirmDialog,
+      removePerson,
     };
   },
 };

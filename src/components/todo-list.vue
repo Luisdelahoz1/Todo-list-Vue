@@ -3,7 +3,7 @@
     <h1>Todo-list</h1>
     <button
       class="btnAñadir"
-      @click="toggleModal"
+      @click="openModal"
       :disabled="displayConfirmation || showModal"
     >
       Agregar Persona
@@ -24,13 +24,12 @@
       </Column>
       <Column header="Acciones">
         <template #body="slotProps">
-          <ConfirmDialog></ConfirmDialog>
-          <button @click="confirmDelete(slotProps.rowIndex)">Eliminar</button>
+          <ConfirmDialog />
+          <button @click="confirmDelete(slotProps.data)">Eliminar</button>
         </template>
       </Column>
     </DataTable>
-
-    <Dialog :visible="showModal" header="Añadir Persona" :onHide="closeModal">
+    <Dialog :visible="showModal" header="Añadir Persona" @onHide="closeModal">
       <form @submit.prevent="addPerson">
         <div class="form-group">
           <label for="firstName">Nombre:</label>
