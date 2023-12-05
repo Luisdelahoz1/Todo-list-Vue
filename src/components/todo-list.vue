@@ -24,7 +24,6 @@
       </Column>
       <Column header="Acciones">
         <template #body="slotProps">
-          <ConfirmDialog />
           <button @click="confirmDelete(slotProps.data)">Eliminar</button>
         </template>
       </Column>
@@ -80,6 +79,8 @@
           />
         </div>
 
+        
+        
         <button
           type="submit"
           :disabled="!isFormValid"
@@ -91,6 +92,7 @@
       </form>
     </Dialog>
 
+    <ConfirmDialog />
     <Toast />
   </div>
 </template>
