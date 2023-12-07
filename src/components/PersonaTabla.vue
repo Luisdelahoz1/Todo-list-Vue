@@ -127,8 +127,10 @@ export default {
     };
 
     const removePerson = (person) => {
-      if (person !== -1) {
-        persons.value.splice(person, 1);
+      const index = persons.value.findIndex((p) => p.id === person.id);
+
+      if (index !== -1) {
+        persons.value.splice(index, 1);
         personToDelete.value = null;
         showModal.value = false;
       }
