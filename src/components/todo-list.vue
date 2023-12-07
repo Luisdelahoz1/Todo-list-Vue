@@ -99,6 +99,55 @@
 </template>
 
 <style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.btnAgregar {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.dataTableContainer {
+  margin-top: 20px;
+}
+
+.pi {
+  font-size: 1.5em;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.buttonGuardar {
+  background-color: #2838c6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.buttonGuardar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed;
+  width: 100%;
+}
+
 select {
   width: 100%;
   padding: 10px;
