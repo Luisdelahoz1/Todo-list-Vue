@@ -20,7 +20,7 @@
         <Column field="gender" header="Género"></Column>
         <Column field="active" header="Activo">
           <template #body="slotProps">
-            {{ slotProps.data.active ? "Si" : "No " }}
+            {{ slotProps.data.active.activeOptions ? "Si" : "No " }}
           </template>
         </Column>
         <Column header="Acciones">
@@ -79,6 +79,7 @@
             :options="activeOptions"
             optionLabel="label"
             placeholder="Seleccione un estado"
+            required
           />
         </div>
 
@@ -88,7 +89,7 @@
           class="buttonAgregar"
           :class="{ 'disabled-button': !isFormValid }"
         >
-          {{ editModeIndex !== -1 ? "Guardar cambios" : "Guardar" }}
+          Guardar
         </button>
       </form>
     </Dialog>

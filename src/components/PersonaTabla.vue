@@ -18,6 +18,7 @@ export default {
   setup() {
     const toast = useToast();
     const confirm = useConfirm();
+
     const displayConfirmation = ref(false);
     const showModal = ref(false);
     const personToDelete = ref(null);
@@ -30,18 +31,20 @@ export default {
       country: "",
       age: null,
       gender: "Masculino",
-      active: true,
+      active: null,
     });
 
     const countries = ["Colombia", "Brasil", "Chile", "Argentina"];
+
     const activeOptions = [
-      { label: "Activo", value: true },
-      { label: "Inactivo", value: false },
+      { label: "Activo", activeOptions: true },
+      { label: "Inactivo", activeOptions: false },
     ];
 
     const isFormValid = computed(() => {
       return isPersonValid();
     });
+
     const openModal = () => {
       showModal.value = true;
     };
@@ -103,10 +106,8 @@ export default {
               detail: " Eliminacion correcta",
               life: 1500,
             });
-
             removePerson(person);
           },
-
           reject: () => {
             toast.add({
               severity: "error",
@@ -142,9 +143,16 @@ export default {
       const isLastNameValid = newPerson.value.lastName.trim() !== "";
       const isCountryValid = newPerson.value.country.trim() !== "";
       const isAgeValid = newPerson.value.age !== null;
+      const isGenderValid = newPerson.value.gender !== null;
+      const isActiveValid = newPerson.value.active !== null;
 
       return (
-        isFirstNameValid && isLastNameValid && isCountryValid && isAgeValid
+        isFirstNameValid &&
+        isLastNameValid &&
+        isCountryValid &&
+        isAgeValid &&
+        isGenderValid &&
+        isActiveValid
       );
     };
 
