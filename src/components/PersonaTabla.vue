@@ -47,8 +47,9 @@ export default {
     };
 
     const closeModal = () => {
-      console.log("Cerrando modal");
       showModal.value = false;
+      resetForm();
+      editModeIndex.value = -1;
     };
 
     const showToast = (severity, summary, detail) => {
@@ -62,12 +63,22 @@ export default {
 
     const addPerson = () => {
       if (isFormValid.value) {
-        const id = Math.floor(Math.random() * 1000);
-        const newPersonData = { id, ...newPerson.value };
-        persons.value.push(newPersonData);
-        showToast("success", "Éxito", "Persona agregada correctamente");
-        showModal.value = false;
+        const existingPersonIndex = persons.value.findIndex(
+          (p) => p.id === newPerson.value.id
+        );
+
+        if (existingPersonIndex !== -1) {
+          persons.value.splice(existingPersonIndex, 1, { ...newPerson.value });
+          showToast("success", "Éxito", "Persona editada correctamente");
+        } else {
+          const id = Math.floor(Math.random() * 1000);
+          const newPersonData = { id, ...newPerson.value };
+          persons.value.push(newPersonData);
+          showToast("success", "Éxito", "Persona agregada correctamente");
+        }
+
         resetForm();
+        showModal.value = false;
       } else {
         showToast("error", "Error", "Por favor, complete todos los campos.");
       }
@@ -107,6 +118,11 @@ export default {
         })
       ) {
       }
+    };
+
+    const editPerson = (person) => {
+      newPerson.value = { ...person };
+      showModal.value = true;
     };
 
     const removePerson = (person) => {
@@ -161,6 +177,7 @@ export default {
       confirmDelete,
       showConfirmDialog,
       removePerson,
+      editPerson,
     };
   },
 };

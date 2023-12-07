@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="container">
     <h1>Todo-list</h1>
     <button
       class="btnAñadir"
-      @click="openModal"
+      @click="toggleModal"
       :disabled="displayConfirmation || showModal"
     >
       Agregar Persona
@@ -11,23 +11,26 @@
 
     <br />
     <br />
-    <DataTable :value="persons">
-      <Column field="firstName" header="Nombre"></Column>
-      <Column field="lastName" header="Apellido"></Column>
-      <Column field="age" header="Edad"></Column>
-      <Column field="country" header="País"></Column>
-      <Column field="gender" header="Género"></Column>
-      <Column field="active" header="Activo">
-        <template #body="slotProps">
-          {{ slotProps.data.active ? "Si" : "No " }}
-        </template>
-      </Column>
-      <Column header="Acciones">
-        <template #body="slotProps">
-          <button @click="confirmDelete(slotProps.data)">Eliminar</button>
-        </template>
-      </Column>
-    </DataTable>
+    <div class="dataTableContainer">
+      <DataTable :value="persons">
+        <Column field="firstName" header="Nombre"></Column>
+        <Column field="lastName" header="Apellido"></Column>
+        <Column field="age" header="Edad"></Column>
+        <Column field="country" header="País"></Column>
+        <Column field="gender" header="Género"></Column>
+        <Column field="active" header="Activo">
+          <template #body="slotProps">
+            {{ slotProps.data.active ? "Si" : "No " }}
+          </template>
+        </Column>
+        <Column header="Acciones">
+          <template #body="slotProps">
+            <i class="pi pi-pencil" @click="editPerson(slotProps.data)"></i>
+            <i class="pi pi-trash" @click="confirmDelete(slotProps.data)"></i>
+          </template>
+        </Column>
+      </DataTable>
+    </div>
     <Dialog :visible="showModal" header="Añadir Persona" @onHide="closeModal">
       <form @submit.prevent="addPerson">
         <div class="form-group">
@@ -79,15 +82,13 @@
           />
         </div>
 
-        
-        
         <button
           type="submit"
           :disabled="!isFormValid"
           class="buttonAgregar"
           :class="{ 'disabled-button': !isFormValid }"
         >
-          Guardar
+          {{ editModeIndex !== -1 ? "Guardar cambios" : "Guardar" }}
         </button>
       </form>
     </Dialog>
