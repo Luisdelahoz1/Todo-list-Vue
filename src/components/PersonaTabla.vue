@@ -128,7 +128,6 @@ export default {
 
     const removePerson = (person) => {
       const index = persons.value.findIndex((p) => p.id === person.id);
-
       if (index !== -1) {
         persons.value.splice(index, 1);
         personToDelete.value = null;
