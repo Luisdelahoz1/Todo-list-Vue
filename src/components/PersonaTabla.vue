@@ -52,7 +52,6 @@ export default {
     const closeModal = () => {
       showModal.value = false;
       resetForm();
-      editModeIndex.value = -1;
     };
 
     const showToast = (severity, summary, detail) => {

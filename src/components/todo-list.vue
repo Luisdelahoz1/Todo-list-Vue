@@ -92,8 +92,8 @@
           Guardar
         </button>
       </form>
+      <i data-v-f927f936="" class="pi pi-times" style="position: absolute;top: 5%;right: 60%;cursor: pointer;left: 82%;font-size: 100%;" @click="closeModal"></i>   
     </Dialog>
-
     <ConfirmDialog />
     <Toast />
   </div>
