@@ -121,8 +121,28 @@ export default {
     };
 
     const editPerson = (person) => {
-      newPerson.value = { ...person };
-      showModal.value = true;
+      if (
+        confirm.require({
+          message: `¿Seguro quieres editar a  ${person.firstName} ? `,
+          header: "Editar",
+          icon: "pi pi-exclamation-triangle",
+          rejectClass: "p-button-danger p-button-text",
+          acceptClass: "p-button-success p-button-text",
+          accept: () => {
+            newPerson.value = { ...person };
+            showModal.value = true;
+          },
+          reject: () => {
+            toast.add({
+              severity: "error",
+              summary: "Error",
+              detail: "Usuaro no editado",
+              life: 3000,
+            });
+          },
+        })
+      ) {
+      }
     };
 
     const removePerson = (person) => {

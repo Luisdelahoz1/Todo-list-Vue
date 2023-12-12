@@ -31,7 +31,12 @@
         </Column>
       </DataTable>
     </div>
-    <Dialog :visible="showModal" header="Añadir Persona" @onHide="closeModal">
+    <Dialog
+      :visible="showModal"
+      header="Añadir Persona"
+      @onHide="closeModal"
+      :draggable="false"
+    >
       <form @submit.prevent="addPerson">
         <div class="form-group">
           <label for="firstName">Nombre:</label>
@@ -92,7 +97,20 @@
           Guardar
         </button>
       </form>
-      <i data-v-f927f936="" class="pi pi-times" style="position: absolute;top: 5%;right: 60%;cursor: pointer;left: 82%;font-size: 100%;" @click="closeModal"></i>   
+      <i
+        data-v-f927f936=""
+        class="pi pi-times"
+        style="
+          position: absolute;
+          top: 3%;
+          right: 21%;
+          cursor: pointer;
+          left: 75%;
+          font-size: 0%;
+          padding: 9%;
+        "
+        @click="closeModal"
+      ></i>
     </Dialog>
     <ConfirmDialog />
     <Toast />
@@ -279,6 +297,9 @@ input[type="checkbox"] {
   position: relative;
   user-select: none;
   width: 100%;
+}
+
+pi pi-times {
 }
 </style>
 
