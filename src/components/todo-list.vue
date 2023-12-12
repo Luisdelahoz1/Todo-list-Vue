@@ -298,9 +298,6 @@ input[type="checkbox"] {
   user-select: none;
   width: 100%;
 }
-
-pi pi-times {
-}
 </style>
 
 <script src="./PersonaTabla.vue"></script>
