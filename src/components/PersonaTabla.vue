@@ -71,12 +71,12 @@ export default {
 
         if (existingPersonIndex !== -1) {
           persons.value.splice(existingPersonIndex, 1, { ...newPerson.value });
-          showToast("success", "Éxito", "Persona editada correctamente");
+          showToast("success", "Éxito", "Usuario editado correctamente");
         } else {
           const id = Math.floor(Math.random() * 1000);
           const newPersonData = { id, ...newPerson.value };
           persons.value.push(newPersonData);
-          showToast("success", "Éxito", "Persona agregada correctamente");
+          showToast("success", "Éxito", "Usuario agregado correctamente");
         }
 
         resetForm();
